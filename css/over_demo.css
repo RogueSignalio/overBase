@@ -11,7 +11,7 @@
 
   body{
     min-height: 100%;  
-    background: #000000 url("https://roguesignalio.github.io/overBase/roguesignal_bg.png") repeat center bottom/cover;
+    background: #000000 url("https://roguesignalio.github.io/overBase/assets/roguesignal_bg.png") repeat center bottom/cover;
     background-size: 40%;
     width: 100%;
     height: 100%;
@@ -146,20 +146,17 @@
     border-width:2px;
     border-style:solid;
     padding-right:3px;
-    border-radius:10px;"
+    border-radius:10px;
+    font-size: 16px;
+    width: 90%;
     cursor: none;
+    overflow-y:auto;
     color: var(--mylightyellow)
   }
   .rsyellow { color: var(--myyellow); } 
   ul {
     font-size: 14px;
   }
-  .overpuzzle {
-/*    display: grid;
-    place-items: center;
-    height: 420px; /* optional */
-*/  }  
-
   /* Works on Firefox */
   * {
     scrollbar-width: auto;
