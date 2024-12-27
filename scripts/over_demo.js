@@ -37,34 +37,23 @@ function over_demo_panel(name,version=1,gitproject,bullet_points=[],buttons={}) 
   document.getElementsByTagName('body')[0].innerHTML += over_demo_html
   for (const detail in bullet_points) { odemo_add_detail(bullet_points[detail]) }
   Object.keys(buttons).map(function(v) { 
-    odemo_add_button(buttons[v])
+    odemo_add_button(v,buttons[v])
   })
 
   window.odemo_logo = document.getElementById('logo');
   odemo_toggle_controls();
+  window.odemo_growler = odemo_growler()
 }
 
 function odemo_add_button(text,onclck=null) {
   var d = document.createElement('button')
-  // if (onclck == null) {
-  //   onclck = function() { console.log('Clicked '+${text}); }
-  // }
   d.innerHTML = text
-  d.id = `odemo_button_${text}`
-  d.name = `odemo_button_${text}`
-  // d.onclick = onclck
-//  d.onClick = onclck
-  d.setAttribute('onClick', "console.log('Clicked "+text+"');");//  }
+  d.id = `odemo_button_${text.replace(/\W/g,'_')}`
+  d.name = d.id
+  d.setAttribute('onClick', onclck) ; //"console.log('Clicked "+text+"');");//  }
   document.getElementById('odemo_buttons').appendChild(d)
   document.getElementById('odemo_buttons').innerHTML += '<br>'
-//  document.getElementById(`odemo_button_${text}`).addEventListener("click", function() { console.log('Clicked '+text); })
-console.log(`odemo_button_${text}`)
-// console.log(onclck)
-// console.log(onclck.call(this))
-   // de.onClick = function() { onclck.call(this); }
-   // de.onclick = function() { onclck.call(this); }
-// //console.log(de.onclick)
-//   window.odemo_buttons.push(de)
+//  console.log(`odemo_button_${d.id}`)
 }
 
 function odemo_add_detail(detail) {
@@ -76,13 +65,45 @@ function odemo_add_detail(detail) {
 
 function odemo_cleanup() {
   // op.growler.clearGrowls() 
-  window.odemo.growler.clearGrowls() 
+  window.odemo_growler.clearGrowls() 
   logo_off()
 }
 
 function odemo_show_info(info) {
-  setTimeout(() => { window.odemo.growler.thinking(info) },1000)
+  window.odemo_growler.thinking(info)
 }
+
+function odemo_growl(msg) { window.odemo_growler.success(msg) }
+
+function odemo_growler() {
+  let og = new OverGrowl({
+    public: 'growler2',
+    z_index:20000, unique: true, close_button: false, duration: 4000, fade: 500, inline:false,
+    offset_x: 0,
+    css:`
+        #growler2-parent{
+        grid-row-gap: 1px;
+        opacity: 1;
+          // background-color: #00000077;
+          border-radius: 15px;
+          left: 10px;
+          width: 300px;
+        }
+    `
+  });
+  og.add_type('thinking',{ duration: 5000, fade: 1500 },`
+    border-color: rgb(60, 60, 80);
+    background-color: #000000;
+    color: #DDDDDD;
+  `,`
+    width: 30px;
+    height: 30px;
+    background-image: url('https://cdn.jsdelivr.net/gh/RogueSignalio/overGrowl/assets/overgrowl-gear.png');
+    background-size: cover;      
+  `)
+  return og
+}
+
 
 function odemo_stop() {
   cleanup()
