@@ -73,8 +73,11 @@
   button:hover {
     box-shadow: 5px 5px 5px 0px var(--myorange);
   }
-
+  input {
+    cursor: pointer;
+  }
   input[type=checkbox]:focus {
+    cursor: pointer;
     outline: 1px solid rgba(0, 0, 0, 0.2);
   }
 
@@ -96,6 +99,9 @@
   input[type=checkbox]:checked {
     background-color: var(--myorange);
     background: var(--myorange) url("data:image/gif;base64,R0lGODlhCwAKAIABAP////3cnSH5BAEKAAEALAAAAAALAAoAAAIUjH+AC73WHIsw0UCjglraO20PNhYAOw==") 3px 3px no-repeat;
+  }
+  label {
+    cursor: pointer;
   }
   .toggle {
     min-width: 10px;
@@ -126,7 +132,7 @@
     -o-transition: box-shadow 0.4s; /* Opera */
   }
   .logo:hover {
-    box-shadow: 0px 0px 10px 10px var(--mydarkblue);
+    box-shadow: 0px 0px 8px 10px var(--mylightblue);
     transition: box-shadow 1s;
     -moz-transition: box-shadow 1s; /* Firefox 4 */
     -webkit-transition: box-shadow 1s; /* Safari and Chrome */
@@ -151,7 +157,7 @@
     padding-left: 20px;
     font-size: 16px;
     width: 90%;
-    cursor: none;
+/*    cursor: none;*/
     overflow-y:auto;
     color: var(--mylightyellow)
   }

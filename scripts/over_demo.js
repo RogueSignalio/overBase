@@ -21,20 +21,21 @@ function over_demo_panel(name,version=1,gitproject,bullet_points=[],buttons={}) 
     <button onClick="" class="toggle"><label for="odemo_logt"><input type="checkbox" id="odemo_logt" checked="true" onclick="odemo_toggle_logo()">🖾</label></button>
   <br>
     <button onClick="" class="toggle"><label for="odemo_vol"><input type="checkbox" id="odemo_vol" checked="true" onclick="op.audio_toggle();">🕪</label></button>
-    <button onClick="stop()" class="toggle" style="color:red;">🛑</button>
+    <button onClick="odemo_stop()" class="toggle" style="color:red;">🛑</button>
   <br>
     <div id="odemo_buttons" name="odemo_buttons"></div>
   </div>
   <div id="odemo_logo" class="logo" style="opacity:0.8;z-index:9999;">
   <p class="rsyellow">${name} (${version}) <a href="http://www.roguesignal.io" target="_BLANK_">RogueSignal.IO</a> | <a href="https://github.com/roguesignalio/${gitproject}" target="_BLANK_" id="readme">Git Project</a></p>
-  <img src="assets/RogueSignal_FullLogo.svg" style="width:350px;"/>
+  <img src="https://cdn.jsdelivr.net/gh/RogueSignalio/overBase/assets/RogueSignal_FullLogo.svg" style="width:350px;"/>
   <p>
   <ul id="odemo_details" class="details">
   <ul>
   </div>
   `
 
-  document.getElementsByTagName('body')[0].innerHTML += over_demo_html
+  // document.body.innerHTML += over_demo_html
+  document.body.insertAdjacentHTML('beforeend', over_demo_html)
   for (const detail in bullet_points) { odemo_add_detail(bullet_points[detail]) }
   Object.keys(buttons).map(function(v) { 
     odemo_add_button(v,buttons[v])

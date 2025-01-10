@@ -24,14 +24,20 @@ class OverBase {
       ...config
     }
 
+    if (this.config.parent == null) {
+      this.config.parent = 'overbase'
+      var oo = document.createElement('div');
+      oo.id = 'overbase'
+      document.body.append(oo)
+    }
     this.engine = engine
     if (this.engine == null) {
       this.engine = this.new_engine(ph_config)
     }
 
-    this.over_load_js = {} // Holds loaded JS file names
     this.over_load_queue = [] // 
     this.growler = null;
+    this.loaded = []
   }
 
   new_engine() {
@@ -47,7 +53,11 @@ class OverBase {
     return new Phaser.Game(conf);
   }
 
-  over_load_js(name,onload=function(){}) {
+ // Raise or lower to the z-index min or max layer
+  to_front(zindex=this.config.z_index) { this.engine.canvas.style.zIndex = zindex; this.engine.canvas.focus(); this.engine.canvas.style.visibility = 'visible'; }
+  to_back(zindex=(this.config.z_index*-1)) { this.engine.canvas.style.zIndex = zindex; this.engine.canvas.style.visibility = 'hidden'; this.engine.canvas.blur(); }
+
+  load_js(name,onload=function(){}) {
     if (this.over_loaded_js[name]) return;
     const script = document.createElement('script');
     script.id = `${name}`;
@@ -57,20 +67,60 @@ class OverBase {
     console.log(`${name} loaded.`)
   }
 
-
-  over_chainload_js(files,onload=function(){}) {
-
+  load_plugin(name,onload=null) {
+    if (this.config.preload) { this.loaded[name] = true; }
+    // else {
+      if (this.plugins[name] != null) {
+        this.load_script(this.plugins[name], ()=>{
+          this.insert_plugin(name,onload)
+        })
+      }
+      else { this.insert_plugin(name,onload) }
+    // }
   }
 
-  over_load_add(file) {
-    window.over_load_queue  
+  insert_plugin(name,onload=()=>{ }) {
+    if (this.loaded[name]) {
+      onload.call(this)
+    } else {
+      this.insert_script(`${name}.js`,`${this.config.modules_path}/${name}.js`,onload)
+    }
   }
 
-  over_load_queue_next() {
-
+  insert_script(id,file,onload=()=>{ }) {
+    if (this.loaded[name]) {
+      onload.call(this)
+    } else {
+      let script = document.createElement('script');
+      script.id = id
+      script.src = file
+      document.body.append(script);
+      script.onload = ()=> { 
+        this.loaded[id] = true; 
+        onload.call(this);  
+        this.config.debug && console.log(`${file} loaded.`); 
+      }
+    }
   }
-  over_load_queue(onload) {
 
+  load_queue_add(tag,file) {
+    if (this.over_load_queue[tag] == null) { this.over_load_queue[tag] = [] }
+    this.over_load_queue[tag].push(file)
+  }
+
+  load_queue(tag,onload) {
+    if ((this.over_load_queue[tag] == null) || (this.over_load_queue[tag].length <= 0)) { return null; }
+
+    var file = this.over_load_queue[tag].shift()
+    var id = file.split('/').pop().replace(/\W/g,'_')
+
+    if (this.config.preload) { this.loaded[id] = true; }
+    if (this.over_load_queue[tag].length > 0) {
+      this.load_queue(tag, ()=>{
+        this.insert_script(id,file,onload)
+      })
+    }
+    else { this.insert_script(id,file,onload) }
   }
 
   random_integer(min,max) {
