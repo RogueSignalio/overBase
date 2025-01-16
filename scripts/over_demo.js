@@ -112,7 +112,7 @@ function odemo_growler() {
 function odemo_stop() {
   cleanup()
   // window.odemo.stop()
-  logo_on()
+  odemo_logo_on()
 }
 
 function odemo_toggle_controls() {
