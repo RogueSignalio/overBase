@@ -10,9 +10,12 @@ See README
 function over_demo_panel(name,version=1,gitproject,bullet_points=[],buttons={}) {
   window.odemo_bg_vis = true
   window.odemo_logo_vis = true
-  window.odemo
-  window.odemo_logo
+  // window.odemo
+  // window.odemo_logo
   window.odemo_buttons = []
+//  window.odemo_stop = () => { }
+  window.cleanup = ()=> { }
+  window.odemo_audio_toggle = () => { }
   document.title = `${name} - RogueSignal.io`
   over_demo_html = `
   <button id="odemo_control_button" class="control_icon" onclick="odemo_toggle_controls();">⮝⮝</button>
@@ -20,7 +23,7 @@ function over_demo_panel(name,version=1,gitproject,bullet_points=[],buttons={}) 
     <button onClick="" class="toggle"><label for="odemo_bgt"><input type="checkbox" id="odemo_bgt" checked="true" onclick="odemo_toggle_bg();">🗔</label></button>
     <button onClick="" class="toggle"><label for="odemo_logt"><input type="checkbox" id="odemo_logt" checked="true" onclick="odemo_toggle_logo()">🖾</label></button>
   <br>
-    <button onClick="" class="toggle"><label for="odemo_vol"><input type="checkbox" id="odemo_vol" checked="true" onclick="op.audio_toggle();">🕪</label></button>
+    <button onClick="" class="toggle"><label for="odemo_vol"><input type="checkbox" id="odemo_vol" checked="true" onclick="odemo_audio_toggle();">🕪</label></button>
     <button onClick="odemo_stop()" class="toggle" style="color:red;">🛑</button>
   <br>
     <div id="odemo_buttons" name="odemo_buttons"></div>
@@ -108,7 +111,7 @@ function odemo_growler() {
 
 function odemo_stop() {
   cleanup()
-  window.odemo.stop()
+  // window.odemo.stop()
   logo_on()
 }
 

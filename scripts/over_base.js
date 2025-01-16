@@ -19,7 +19,6 @@ class OverBase {
       audio_engine: null,         // Provide a compatible audio engine, such as an instance of overAudio
       background: '0x000000',     // Background color, if visible
       transparent: true,          // Transparent or not background
-      // parent: 'overpuzzle',
       z_index: 10001,
       ...config
     }
@@ -35,7 +34,8 @@ class OverBase {
       this.engine = this.new_engine(ph_config)
     }
 
-    this.over_load_queue = [] // 
+    this.over_load_queue = []
+    this.over_loaded_js = [] 
     this.growler = null;
     this.loaded = []
   }
@@ -58,17 +58,17 @@ class OverBase {
   to_back(zindex=(this.config.z_index*-1)) { this.engine.canvas.style.zIndex = zindex; this.engine.canvas.style.visibility = 'hidden'; this.engine.canvas.blur(); }
 
   load_js(name,onload=function(){}) {
-    if (this.over_loaded_js[name]) return;
+    if (this.loaded_js[name]) return;
     const script = document.createElement('script');
     script.id = `${name}`;
     script.src = `${name}`;
     document.body.append(script);
-    script.onload = ()=> { this.over_load_js[name] = true; onload.call(this); }
+    script.onload = ()=> { this.loaded_js[name] = true; onload.call(this); }
     console.log(`${name} loaded.`)
   }
 
   load_plugin(name,onload=null) {
-    if (this.config.preload) { this.loaded[name] = true; }
+    if (this.config.preload) { this.loaded_js[name] = true; }
     // else {
       if (this.plugins[name] != null) {
         this.load_script(this.plugins[name], ()=>{
@@ -80,7 +80,7 @@ class OverBase {
   }
 
   insert_plugin(name,onload=()=>{ }) {
-    if (this.loaded[name]) {
+    if (this.loaded_js[name]) {
       onload.call(this)
     } else {
       this.insert_script(`${name}.js`,`${this.config.modules_path}/${name}.js`,onload)
@@ -88,7 +88,7 @@ class OverBase {
   }
 
   insert_script(id,file,onload=()=>{ }) {
-    if (this.loaded[name]) {
+    if (this.loaded_js[name]) {
       onload.call(this)
     } else {
       let script = document.createElement('script');
@@ -96,7 +96,7 @@ class OverBase {
       script.src = file
       document.body.append(script);
       script.onload = ()=> { 
-        this.loaded[id] = true; 
+        this.loaded_js[id] = true; 
         onload.call(this);  
         this.config.debug && console.log(`${file} loaded.`); 
       }
@@ -114,13 +114,19 @@ class OverBase {
     var file = this.over_load_queue[tag].shift()
     var id = file.split('/').pop().replace(/\W/g,'_')
 
-    if (this.config.preload) { this.loaded[id] = true; }
+    if (this.config.preload) { this.loaded_js[id] = true; }
     if (this.over_load_queue[tag].length > 0) {
       this.load_queue(tag, ()=>{
         this.insert_script(id,file,onload)
       })
     }
     else { this.insert_script(id,file,onload) }
+  }
+
+  // Kills the engine, scenes, and canvas.
+  // Useful if you want to clean it up.
+  kill() {
+    this.engine.destroy(true, false)
   }
 
   random_integer(min,max) {
