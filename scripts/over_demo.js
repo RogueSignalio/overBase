@@ -14,8 +14,8 @@ function over_demo_panel(name,version=1,gitproject,bullet_points=[],buttons={}) 
   // window.odemo_logo
   window.odemo_buttons = []
 //  window.odemo_stop = () => { }
-  window.cleanup = ()=> { }
-  window.odemo_audio_toggle = () => { }
+  window.cleanup = ()=> { console.log('Provide custom stop code in window.cleanup()...') }
+  window.audio_toggle = () => { console.log('Provide custom audio toggle code in window.audio_toggle()...') }
   document.title = `${name} - RogueSignal.io`
   over_demo_html = `
   <button id="odemo_control_button" class="control_icon" onclick="odemo_toggle_controls();">⮝⮝</button>
@@ -66,13 +66,6 @@ function odemo_add_detail(detail) {
   document.getElementById('odemo_details').appendChild(d)
 }
 
-
-function odemo_cleanup() {
-  // op.growler.clearGrowls() 
-  window.odemo_growler.clearGrowls() 
-  logo_off()
-}
-
 function odemo_show_info(info) {
   window.odemo_growler.thinking(info)
 }
@@ -110,9 +103,20 @@ function odemo_growler() {
 
 
 function odemo_stop() {
-  cleanup()
+  window.cleanup()
   // window.odemo.stop()
   odemo_logo_on()
+}
+
+function odemo_audio_toggle() {
+  window.audio_toggle()
+  // window.odemo.stop()
+}
+
+function odemo_cleanup() {
+  // op.growler.clearGrowls() 
+  window.odemo_growler.clearGrowls() 
+  logo_off()
 }
 
 function odemo_toggle_controls() {
