@@ -133,6 +133,15 @@ class OverBase {
     return Math.floor(Math.random() * (max - min + 1) ) + min;    
   }
 
+  random_item(collection) {
+    if (Array.isArray(collection)) {
+      return collection[Math.floor(Math.random()*collection.length)];
+    } else {
+      let oe = Object.entries(collection)
+      return oe[Math.floor(Math.random()*oe.length)];      
+    }
+  }
+
   to_int(num) {
     return Math.floor(num)
   }
