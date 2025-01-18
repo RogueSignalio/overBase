@@ -116,7 +116,7 @@ function odemo_audio_toggle() {
 function odemo_cleanup() {
   // op.growler.clearGrowls() 
   window.odemo_growler.clearGrowls() 
-  logo_off()
+  odemo_logo_off()
 }
 
 function odemo_toggle_controls() {

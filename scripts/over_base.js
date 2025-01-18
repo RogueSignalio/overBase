@@ -138,7 +138,7 @@ class OverBase {
       return collection[Math.floor(Math.random()*collection.length)];
     } else {
       let oe = Object.entries(collection)
-      return oe[Math.floor(Math.random()*oe.length)];      
+      return oe[Math.floor(Math.random()*oe.length)][1];      
     }
   }
 
